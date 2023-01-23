@@ -16,7 +16,7 @@ import (
 )
 
 const (
-	tracerName = "github.com/riandyrn/otelchi"
+	tracerName = "github.com/shah-pf/otelchi"
 )
 
 // Middleware sets up a handler to start tracing the incoming
@@ -46,6 +46,7 @@ func Middleware(serverName string, opts ...Option) func(next http.Handler) http.
 			chiRoutes:           cfg.ChiRoutes,
 			reqMethodInSpanName: cfg.RequestMethodInSpanName,
 			filter:              cfg.Filter,
+			spanCustomizer:      cfg.SpanCustomizer,
 		}
 	}
 }
@@ -58,6 +59,7 @@ type traceware struct {
 	chiRoutes           chi.Routes
 	reqMethodInSpanName bool
 	filter              func(r *http.Request) bool
+	spanCustomizer      func(r *http.Request, span oteltrace.Span) oteltrace.Span
 }
 
 type recordingResponseWriter struct {
@@ -139,6 +141,11 @@ func (tw traceware) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		oteltrace.WithAttributes(semconv.HTTPServerAttributesFromHTTPRequest(tw.serverName, routePattern, r)...),
 		oteltrace.WithSpanKind(oteltrace.SpanKindServer),
 	)
+
+	if tw.spanCustomizer != nil {
+		span = tw.spanCustomizer(r, span)
+	}
+
 	defer span.End()
 
 	// get recording response writer

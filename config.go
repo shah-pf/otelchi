@@ -15,6 +15,7 @@ type config struct {
 	ChiRoutes               chi.Routes
 	RequestMethodInSpanName bool
 	Filter                  func(r *http.Request) bool
+	SpanCustomizer          func(r *http.Request, span oteltrace.Span) oteltrace.Span
 }
 
 // Option specifies instrumentation configuration options.
@@ -64,8 +65,8 @@ func WithChiRoutes(routes chi.Routes) Option {
 //
 // See following threads for details:
 //
-// - https://github.com/riandyrn/otelchi/pull/3#issuecomment-1005883910
-// - https://github.com/riandyrn/otelchi/issues/6#issuecomment-1034461912
+// - https://github.com/shah-pf/otelchi/pull/3#issuecomment-1005883910
+// - https://github.com/shah-pf/otelchi/issues/6#issuecomment-1034461912
 func WithRequestMethodInSpanName(isActive bool) Option {
 	return optionFunc(func(cfg *config) {
 		cfg.RequestMethodInSpanName = isActive
@@ -78,5 +79,14 @@ func WithRequestMethodInSpanName(isActive bool) Option {
 func WithFilter(filter func(r *http.Request) bool) Option {
 	return optionFunc(func(cfg *config) {
 		cfg.Filter = filter
+	})
+}
+
+// WithSpanCustomizer is used for customizing span and it's attributes based on custom logic.
+// This is useful for adding additional attributes to the span
+// A SpanCustomizer must return instance of the customized span
+func WithSpanCustomizer(customizer func(r *http.Request, span oteltrace.Span) oteltrace.Span) Option {
+	return optionFunc(func(cfg *config) {
+		cfg.SpanCustomizer = customizer
 	})
 }

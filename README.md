@@ -1,8 +1,8 @@
 # otelchi
 
-[![ci](https://github.com/riandyrn/otelchi/actions/workflows/ci.yaml/badge.svg)](https://github.com/riandyrn/otelchi/actions/workflows/ci.yaml)
-[![Go Report Card](https://goreportcard.com/badge/github.com/riandyrn/otelchi)](https://goreportcard.com/report/github.com/riandyrn/otelchi)
-[![Documentation](https://godoc.org/github.com/riandyrn/otelchi?status.svg)](https://pkg.go.dev/mod/github.com/riandyrn/otelchi)
+[![ci](https://github.com/shah-pf/otelchi/actions/workflows/ci.yaml/badge.svg)](https://github.com/shah-pf/otelchi/actions/workflows/ci.yaml)
+[![Go Report Card](https://goreportcard.com/badge/github.com/shah-pf/otelchi)](https://goreportcard.com/report/github.com/shah-pf/otelchi)
+[![Documentation](https://godoc.org/github.com/shah-pf/otelchi?status.svg)](https://pkg.go.dev/mod/github.com/shah-pf/otelchi)
 
 OpenTelemetry instrumentation for [go-chi/chi](https://github.com/go-chi/chi).
 
@@ -15,7 +15,7 @@ Contributions are welcomed!
 ## Install
 
 ```bash
-$ go get github.com/riandyrn/otelchi
+$ go get github.com/shah-pf/otelchi
 ```
 
 ## Examples
