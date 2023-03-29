@@ -6,6 +6,7 @@ import (
 
 	"github.com/felixge/httpsnoop"
 	"github.com/go-chi/chi/v5"
+	"go.opentelemetry.io/otel/trace"
 
 	"go.opentelemetry.io/otel"
 	"go.opentelemetry.io/otel/propagation"
@@ -169,7 +170,7 @@ func (tw traceware) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	span.SetAttributes(semconv.HTTPStatusCodeKey.Int(rrw.status))
 
 	// set span status
-	spanStatus, spanMessage := semconv.SpanStatusFromHTTPStatusCode(rrw.status)
+	spanStatus, spanMessage := semconv.SpanStatusFromHTTPStatusCodeAndSpanKind(rrw.status, trace.SpanKindServer)
 	span.SetStatus(spanStatus, spanMessage)
 }
 
